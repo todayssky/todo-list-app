@@ -16,7 +16,7 @@ const Input = styled.input`
   border-bottom-left-radius: 10px;
 `;
 
-const TodoFormButton = styled.button`
+const TodoCreateButton = styled.button`
   background-color: #cebdbe;
   width: 50px;
   font-size: 18px;
@@ -39,7 +39,7 @@ export default function TodoCreateForm({ handleCreate }: { handleCreate: (title:
   return (
     <Layout>
       <Input type="text" onChange={(e) => handleChange(e.target.value)} value={title} />
-      <TodoFormButton onClick={handleSubmit}>+</TodoFormButton>
+      <TodoCreateButton onClick={handleSubmit}>+</TodoCreateButton>
     </Layout>
   );
 }

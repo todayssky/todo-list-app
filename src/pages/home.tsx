@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import TodoList from '../components/todo-list';
 import TodoCreateForm from '../components/todo-form';
 import { useState } from 'react';
+import { produce } from 'immer';
 
 const Layout = styled.div`
   width: 726px;
@@ -38,14 +39,13 @@ export function Home() {
       if (prevTodos.length > 0) {
         maxId = Math.max(...prevTodos.map((todo) => todo.id));
       }
-      return [
-        ...prevTodos,
-        {
+      return produce(prevTodos, (draft) => {
+        draft.push({
           id: maxId + 1,
           title,
           done: false,
-        },
-      ];
+        });
+      });
     });
   };
 
@@ -55,14 +55,11 @@ export function Home() {
 
   const handleToggle = (id: number) => {
     setTodos((prevTodos) =>
-      prevTodos.map((todo) => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            done: !todo.done,
-          };
+      produce(prevTodos, (draft) => {
+        const todo = draft.find((todo) => todo.id === id);
+        if (todo) {
+          todo.done = !todo.done;
         }
-        return todo;
       }),
     );
   };
