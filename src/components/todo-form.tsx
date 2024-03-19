@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-const Layout = styled.div`
+const Layout = styled.form`
   display: flex;
   height: 50px;
 `;
@@ -32,14 +32,16 @@ export default function TodoCreateForm({ handleCreate }: { handleCreate: (title:
     setTitle(newValue);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     handleCreate(title);
     setTitle(() => '');
   };
+
   return (
-    <Layout>
+    <Layout onSubmit={handleSubmit}>
       <Input type="text" onChange={(e) => handleChange(e.target.value)} value={title} />
-      <TodoCreateButton onClick={handleSubmit}>+</TodoCreateButton>
+      <TodoCreateButton type="submit">+</TodoCreateButton>
     </Layout>
   );
 }
