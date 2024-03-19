@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import TodoList from '../components/todo-list';
 import TodoCreateForm from '../components/todo-form';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { produce } from 'immer';
 
 const Layout = styled.div`
@@ -33,7 +33,7 @@ export function Home() {
     },
   ]);
 
-  const handleCreate = (title: string) => {
+  const handleCreate = useCallback((title: string) => {
     setTodos((prevTodos) => {
       let maxId = 0;
       if (prevTodos.length > 0) {
@@ -47,13 +47,13 @@ export function Home() {
         });
       });
     });
-  };
+  }, []);
 
-  const handleRemove = (id: number) => {
+  const handleRemove = useCallback((id: number) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-  };
+  }, []);
 
-  const handleToggle = (id: number) => {
+  const handleToggle = useCallback((id: number) => {
     setTodos((prevTodos) =>
       produce(prevTodos, (draft) => {
         const todo = draft.find((todo) => todo.id === id);
@@ -62,7 +62,7 @@ export function Home() {
         }
       }),
     );
-  };
+  }, []);
 
   return (
     <Layout>

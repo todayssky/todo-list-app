@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Todo } from '../modles/todo';
+import React from 'react';
 
 const Layout = styled.article`
   display: flex;
@@ -36,7 +37,7 @@ const RemoveButton = styled.button`
   cursor: pointer;
 `;
 
-export default function TodoArticle({
+function TodoArticle({
   todo,
   handleRemove,
   handleToggle,
@@ -53,3 +54,5 @@ export default function TodoArticle({
     </Layout>
   );
 }
+
+export default React.memo(TodoArticle);
