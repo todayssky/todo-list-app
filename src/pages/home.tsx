@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import TodoList from '../components/todo-list';
 import TodoCreateForm from '../components/todo-form';
-import { useCallback, useState } from 'react';
-import { produce } from 'immer';
+import { useCallback, useReducer } from 'react';
+import todoReducer from '../reducers/todo-reducer';
 
 const Layout = styled.div`
   width: 726px;
@@ -20,7 +20,7 @@ const Title = styled.header`
 `;
 
 export function Home() {
-  const [todos, setTodos] = useState([
+  const [todos, dispatch] = useReducer(todoReducer, [
     {
       id: 1,
       title: '할일1',
@@ -34,34 +34,15 @@ export function Home() {
   ]);
 
   const handleCreate = useCallback((title: string) => {
-    setTodos((prevTodos) => {
-      let maxId = 0;
-      if (prevTodos.length > 0) {
-        maxId = Math.max(...prevTodos.map((todo) => todo.id));
-      }
-      return produce(prevTodos, (draft) => {
-        draft.push({
-          id: maxId + 1,
-          title,
-          done: false,
-        });
-      });
-    });
+    dispatch({ type: 'ADD_TODO', title });
   }, []);
 
   const handleRemove = useCallback((id: number) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    dispatch({ type: 'REMOVE_TODO', id });
   }, []);
 
   const handleToggle = useCallback((id: number) => {
-    setTodos((prevTodos) =>
-      produce(prevTodos, (draft) => {
-        const todo = draft.find((todo) => todo.id === id);
-        if (todo) {
-          todo.done = !todo.done;
-        }
-      }),
-    );
+    dispatch({ type: 'TOGGLE_TODO', id });
   }, []);
 
   return (
