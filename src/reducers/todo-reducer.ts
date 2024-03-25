@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { Todo } from '../modles/todo';
+import { Todo } from '../models/todo';
 
 type Action =
   | { type: 'ADD_TODO'; title: string }

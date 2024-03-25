@@ -1,19 +1,15 @@
 import TodoArticle from './todo-article';
-import { Todo } from '../modles/todo';
+import {} from '../models/todo';
+import { selectTodos } from '../store/todo';
+import { useAppSelector } from '../store/store';
 
-export default function TodoList({
-  todos,
-  handleRemove,
-  handleToggle,
-}: {
-  todos: Todo[];
-  handleRemove: (id: number) => void;
-  handleToggle: (id: number) => void;
-}) {
+export default function TodoList() {
+  const todos = useAppSelector(selectTodos);
+
   return (
     <div>
       {todos.map((todo) => (
-        <TodoArticle key={todo.id} todo={todo} handleRemove={handleRemove} handleToggle={handleToggle} />
+        <TodoArticle key={todo.id} todo={todo} />
       ))}
     </div>
   );

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { selectTodos, todoActions } from '../store/todo';
 
 const Layout = styled.form`
   display: flex;
@@ -26,10 +28,25 @@ const TodoCreateButton = styled.button`
   border-bottom-right-radius: 10px;
 `;
 
-export default function TodoCreateForm({ handleCreate }: { handleCreate: (title: string) => void }) {
+export default function TodoCreateForm() {
   const [title, setTitle] = useState('');
   const handleChange = (newValue: string) => {
     setTitle(newValue);
+  };
+
+  const todos = useAppSelector(selectTodos);
+  const dispatch = useAppDispatch();
+
+  const handleCreate = (title: string) => {
+    const maxId = todos.length > 0 ? Math.max(...todos.map((todo) => todo.id)) + 1 : 0;
+    console.log(maxId);
+    dispatch(
+      todoActions.addTodo({
+        id: maxId,
+        title,
+        done: false,
+      }),
+    );
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

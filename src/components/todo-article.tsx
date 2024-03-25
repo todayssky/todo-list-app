@@ -1,6 +1,8 @@
 import styled from 'styled-components';
-import { Todo } from '../modles/todo';
+import { Todo } from '../models/todo';
 import React from 'react';
+import { useAppDispatch } from '../store/store';
+import { todoActions } from '../store/todo';
 
 const Layout = styled.article`
   display: flex;
@@ -37,15 +39,17 @@ const RemoveButton = styled.button`
   cursor: pointer;
 `;
 
-function TodoArticle({
-  todo,
-  handleRemove,
-  handleToggle,
-}: {
-  todo: Todo;
-  handleRemove: (id: number) => void;
-  handleToggle: (id: number) => void;
-}) {
+function TodoArticle({ todo }: { todo: Todo }) {
+  const dispatch = useAppDispatch();
+
+  const handleToggle = (todoId: number) => {
+    dispatch(todoActions.toggleTodo(todoId));
+  };
+
+  const handleRemove = (todoId: number) => {
+    dispatch(todoActions.removeTodo(todoId));
+  };
+
   return (
     <Layout>
       <Checkbox onClick={() => handleToggle(todo.id)}>{todo.done && '✓'}</Checkbox>
